@@ -1,0 +1,5 @@
+[linklist_test]
+source=tests/linklist_test.c src/container/linklist.c
+include=include
+language=c
+

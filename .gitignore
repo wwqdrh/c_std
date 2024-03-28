@@ -1,0 +1,5 @@
+compile_commands.json
+*.swp
+build
+.cache
+.DS_Store
