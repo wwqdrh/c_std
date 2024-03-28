@@ -9,14 +9,13 @@ int main() {
     append(&head, 2);
     append(&head, 3);
     append(&head, 4);
-
     // 打印链表
     printList(head);
 
-	head = reverseList(head);
-	printList(head);
+    head = reverseList(head);
+    printList(head);
 
     head = reverseList(head);
-	printList(head);
+    printList(head);
     return 0;
 }
