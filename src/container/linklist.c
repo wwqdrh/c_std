@@ -1,51 +1,79 @@
+#ifdef KERNELMODE
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/slab.h>
+#else
 #include <stdio.h>
 #include <stdlib.h>
+#endif
 
 #include "container/linklist.h"
 
-Node* createNode(int data) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
+/* 初始化链表 */
+void hello_list_init(struct list_list *list)
+{
+    list->head = NULL;
+    list->tail = NULL;
 }
 
-void append(Node** head, int data) {
-    Node* newNode = createNode(data);
+/* 添加节点到链表尾部 */
+void hello_list_push(struct list_list *list, int value)
+{
+#ifdef KERNELMODE
+    struct node *new_node = kmalloc(sizeof(struct node), GFP_KERNEL);
+#else
+    struct node *new_node = (struct node*)malloc(sizeof(struct node));
+#endif
+    if (!new_node)
+         return;
 
-    if (*head == NULL) {
-        *head = newNode;
-        return;
+    new_node->value = value;
+    new_node->next = NULL;
+
+    if (list->tail) {
+        new_node->prev = list->tail;
+        list->tail->next = new_node;
+    } else {
+        new_node->prev = NULL;
+        list->head = new_node;
     }
-
-    Node* last = *head;
-    while (last->next != NULL) {
-        last = last->next;
-    }
-
-    last->next = newNode;
+    list->tail = new_node;
 }
 
-Node* reverseList(Node* head) {
-    Node* prev = NULL;
-    Node* current = head;
-    Node* next = NULL;
+/* 从链表中删除节点 */
+void hello_list_del(struct list_list *list, struct node *node)
+{
+    if (node->prev)
+        node->prev->next = node->next;
+    else
+        list->head = node->next;
 
-    while (current != NULL) {
-        next = current->next;
-        current->next = prev;
-        prev = current;
-        current = next;
-    }
-
-    return prev;
+    if (node->next)
+        node->next->prev = node->prev;
+    else
+        list->tail = node->prev;
+#ifdef KERNELMODE
+    kfree(node);
+#else
+    free(node);
+    node = NULL;
+#endif
 }
 
-void printList(Node* head) {
-    Node* current = head;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
+/* 遍历链表并打印节点值 */
+void hello_list_print(struct list_list *list)
+{
+    struct node *curr = list->head;
+#ifdef KERNELMODE
+    while (curr) {
+        printk(KERN_INFO "Value: %d\n", curr->value);
+        curr = curr->next;
     }
-    printf("\n");
+#else
+    while (curr) {
+        printf("Value: %d\n", curr->value);
+        curr = curr->next;
+    }
+#endif
 }
+

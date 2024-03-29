@@ -2,20 +2,10 @@
 #include "container/linklist.h"
 
 int main() {
-    Node* head = NULL; // 初始化链表头节点为NULL
-
-    // 插入节点
-    append(&head, 1);
-    append(&head, 2);
-    append(&head, 3);
-    append(&head, 4);
-    // 打印链表
-    printList(head);
-
-    head = reverseList(head);
-    printList(head);
-
-    head = reverseList(head);
-    printList(head);
+    struct list_list mylist;
+    hello_list_init(&mylist);
+    hello_list_push(&mylist, 10);
+    hello_list_push(&mylist, 20);
+    hello_list_print(&mylist);
     return 0;
 }
