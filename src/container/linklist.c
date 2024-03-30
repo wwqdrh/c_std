@@ -16,6 +16,14 @@ void hello_list_init(struct list_list *list)
     list->tail = NULL;
 }
 
+int hello_list_head_val(struct list_list *list)
+{
+    if (list == NULL || list->head == NULL) {
+        return 0;
+    }
+    return list->head->value;
+}
+
 /* 添加节点到链表尾部 */
 void hello_list_push(struct list_list *list, int value)
 {
