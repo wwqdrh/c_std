@@ -1,5 +1,16 @@
+[lib_log]
+source=lib/log/log.c
+include=include
+language=c11
+
 [linklist_test]
 source=tests/linklist_test.c src/container/linklist.c
 include=include
-language=c99
+language=c11
+flags=-DUNITEST_MAIN
+
+[sort_test]
+source=tests/sort_test.c
+include=include
+language=c11
 flags=-DUNITEST_MAIN
