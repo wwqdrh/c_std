@@ -1,10 +1,9 @@
-#ifndef UNITEST_H
-#define UNITEST_H
-
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
-#include "trace.h"
+
+#include "lib/trace.h"
+#include "lib/unitest.h"
 
 #define UNITEST_PASS 0
 #define UNITEST_FAIL 1
@@ -13,27 +12,14 @@
 static int num_tests = 0;
 static void (*test_funcs[MAX_TESTS])();
 
-#define UNITEST(func) \
-    void func(); \
-    void func##_unitest() { \
-	unitest_begin(#func); \
-	func(); \
-	unitest_end(); \
-    } \
-    __attribute__((constructor)) void register_##func##_test() {\
-        if (num_tests < MAX_TESTS) {\
-	    test_funcs[num_tests++] = &func##_unitest; \
-	}\
-    }\
-    void func()
-
-typedef struct {
-	int passed;
-	int failed;
-} unitest_status_t;
-
 static const char* UNITEST_SUITE_NAME = NULL;
 static unitest_status_t UNITEST_STATUS = {0, 0};
+
+void unitest_register_test(void (*test_func)()) {
+    if (num_tests < MAX_TESTS) {
+        test_funcs[num_tests++] = test_func;
+    }
+}
 
 void unitest_begin(const char* name) {
 	UNITEST_SUITE_NAME = name;
@@ -65,7 +51,8 @@ void unitest_summary(unitest_status_t* status) {
 	printf("    Failed: %d\n", status->failed);
 }
 
-#ifdef UNITEST_MAIN
+#if defined(UNITEST_MAIN) && !defined(UNITEST_MAIN_DEFINED)
+#define UNITEST_MAIN_DEFINED
 
 int main(void) {
     printf("Start Unitest...\n");
@@ -80,4 +67,3 @@ int main(void) {
 
 #endif
 
-#endif

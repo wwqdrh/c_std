@@ -3,11 +3,12 @@ source=lib/log/log.c
 include=include
 language=c11
 
-[linklist_test]
-source=tests/linklist_test.c src/container/linklist.c
+[container_test]
+source=tests/container/*_test.c src/container/*.c lib/unitest/unitest.c
 include=include
 language=c11
 flags=-DUNITEST_MAIN
+links=pthread
 
 [sort_test]
 source=tests/sort_test.c

@@ -1,5 +1,5 @@
-#ifndef CONTAINER_LINKLIST
-#define CONTAINER_LINKLIST
+#ifndef CONTAINER_LINKLIST_H
+#define CONTAINER_LINKLIST_H
 
 struct node {
     int value;

@@ -34,9 +34,9 @@ static int partition(void* arr, int low, int high, size_t size, CompareFunc cmp)
 
 // merge sort
 static void merge(void* arr, int left, int mid, int right, size_t size, CompareFunc cmp) {
-	int i, j, k;
-	int n1 = mid - left + 1; // 左边部分个数
-	int n2 = right - mid; // 右边部分个数
+    int i, j, k;
+    int n1 = mid - left + 1; // 左边部分个数
+    int n2 = right - mid; // 右边部分个数
     // 创建临时数组并拷贝数据过来
     char* L = (char*)malloc(n1 * size);
 	char* R = (char*)malloc(n2 * size);
